@@ -1,0 +1,15 @@
+flask
+flask-cors
+flask_sqlalchemy
+flask-jwt-extended
+python-dotenv
+pandas
+numpy
+scikit-learn
+joblib
+torch
+torchvision
+gtts
+SpeechRecognition
+pillow
+bcrypt
