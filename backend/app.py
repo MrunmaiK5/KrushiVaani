@@ -1,5 +1,9 @@
 from fastapi import FastAPI
-from routes.fertilizer_routes import fertilizer_router
+
+# Routers
+from backend.routes.fertilizer_routes import fertilizer_router
+from backend.routes.crop_routes import router as crop_router
+
 from pydantic import BaseModel
 import json
 import numpy as np
@@ -12,8 +16,8 @@ from nltk.stem import WordNetLemmatizer
 # ------------------------
 app = FastAPI(title="Krushivaani Backend")
 
-# Include fertilizer routes
 app.include_router(fertilizer_router, prefix="/fertilizer", tags=["Fertilizer"])
+app.include_router(crop_routes.router, prefix="/crop", tags=["Crop"])
 
 # ------------------------
 # Load Chatbot Model
