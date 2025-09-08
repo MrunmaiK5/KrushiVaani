@@ -25,7 +25,7 @@ class CropRecommendationRequest(BaseModel):
     rainfall: Union[int, float] = Field(..., description="Rainfall in mm", ge=0, le=1000)
     
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "N": 90,
                 "P": 42,
@@ -42,7 +42,7 @@ class CropRecommendationResponse(BaseModel):
     recommended_crop: str = Field(..., description="The recommended crop based on input parameters")
     
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "recommended_crop": "rice"
             }

@@ -17,7 +17,7 @@ from nltk.stem import WordNetLemmatizer
 app = FastAPI(title="Krushivaani Backend")
 
 app.include_router(fertilizer_router, prefix="/fertilizer", tags=["Fertilizer"])
-app.include_router(crop_routes.router, prefix="/crop", tags=["Crop"])
+app.include_router(crop_router, prefix="/crop", tags=["Crop"])
 
 # ------------------------
 # Load Chatbot Model
