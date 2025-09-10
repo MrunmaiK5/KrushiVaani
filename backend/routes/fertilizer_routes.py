@@ -1,8 +1,15 @@
-from fastapi import APIRouter
-from ..services.fertilizer_service import recommend_fertilizer
+# backend/routes/fertilizer_routes.py
+from fastapi import APIRouter, HTTPException
+from backend.services.fertilizer_service import recommend_fertilizer
+
 fertilizer_router = APIRouter()
 
 @fertilizer_router.post("/recommend")
 def recommend(data: dict):
-    result = recommend_fertilizer(data)
-    return {"recommendation": result}
+    try:
+        result = recommend_fertilizer(data)
+        return {"recommendation": result}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
