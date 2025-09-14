@@ -1,4 +1,3 @@
-# backend/routes/fertilizer_routes.py
 from fastapi import APIRouter, HTTPException
 from backend.services.fertilizer_service import recommend_fertilizer
 
