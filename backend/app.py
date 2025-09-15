@@ -1,78 +1,41 @@
-from fastapi import FastAPI
+# backend/app.py - REFACTORED VERSION
 
-# Routers
-from backend.routes.fertilizer_routes import fertilizer_router
-from backend.routes.crop_routes import router as crop_router
+from flask import Flask, jsonify
+from backend.config import Config
+from backend.extensions import db, bcrypt, cors, migrate # <-- Import from extensions
 
-from pydantic import BaseModel
-import json
-import numpy as np
-import pickle
-import nltk
-from nltk.stem import WordNetLemmatizer
+def create_app(config_class=Config):
+    """Application Factory Function"""
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-# ------------------------
-# Initialize FastAPI
-# ------------------------
-app = FastAPI(title="Krushivaani Backend")
+    # Initialize extensions with the app
+    db.init_app(app)
+    bcrypt.init_app(app)
+    cors.init_app(app)
+    migrate.init_app(app, db)
 
-app.include_router(fertilizer_router, prefix="/fertilizer", tags=["Fertilizer"])
-app.include_router(crop_router, prefix="/crop", tags=["Crop"])
+    # Import models here AFTER extensions are initialized
+    from backend.models.user_model import User
 
-# ------------------------
-# Load Chatbot Model
-# ------------------------
-model = pickle.load(open("ml_models/chatbot/chatbot_model.pkl", "rb"))
-lbl_encoder = pickle.load(open("ml_models/chatbot/label_encoder.pkl", "rb"))
-all_words = pickle.load(open("ml_models/chatbot/all_words.pkl", "rb"))
-intents = json.load(open("ml_models/chatbot/intents.json", encoding="utf-8"))
-lemmatizer = WordNetLemmatizer()
+    # Register the Blueprints (our routes)
+    from backend.routes.user_routes import user_bp
+    from backend.routes.fertilizer_routes import fertilizer_bp
+    from backend.routes.hybrid_routes import hybrid_bp
 
-# ------------------------
-# Helper Functions
-# ------------------------
-def tokenize(sentence):
-    return nltk.word_tokenize(sentence)
+    app.register_blueprint(user_bp, url_prefix='/users')
+    app.register_blueprint(fertilizer_bp, url_prefix='/fertilizer')
+    app.register_blueprint(hybrid_bp, url_prefix='/hybrid')  # <-- Add this line
 
-def lemmatize_words(words):
-    return [lemmatizer.lemmatize(w.lower()) for w in words]
+    # A simple test route
+    @app.route('/')
+    def index():
+        return jsonify(message="The KrushiVaani server is running and ready for authentication!")
 
-def bag_of_words(sentence, all_words):
-    sentence_words = lemmatize_words(tokenize(sentence))
-    bag = np.zeros(len(all_words), dtype=int)
-    for idx, w in enumerate(all_words):
-        if w in sentence_words:
-            bag[idx] = 1
-    return bag
+    return app
 
-# ------------------------
-# Chatbot Request Model
-# ------------------------
-class ChatRequest(BaseModel):
-    message: str
+# Create the app instance
+app = create_app()
 
-# ------------------------
-# Chatbot Route
-# ------------------------
-@app.post("/chatbot", tags=["Chatbot"])
-async def chatbot_response(request: ChatRequest):
-    sentence = request.message
-    bow = bag_of_words(sentence, all_words).reshape(1, -1)
-    result = model.predict(bow)
-    tag = lbl_encoder.inverse_transform(result)[0]
-
-    # Select response
-    response = ""
-    for intent in intents["intents"]:
-        if intent["tag"] == tag:
-            response = np.random.choice(intent["responses"])
-            break
-
-    return {"response": response}
-
-# ------------------------
-# Home Route
-# ------------------------
-@app.get("/")
-def home():
-    return {"message": "Welcome to Krushivaani Backend"}
+if __name__ == '__main__':
+    app.run(debug=True)

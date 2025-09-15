@@ -1,0 +1,11 @@
+# Flask and Web Server
+Flask
+Flask-Cors
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Bcrypt
+python-dotenv
+
+# ML & Data Handling
+pandas
+scikit-learn

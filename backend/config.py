@@ -1,9 +1,8 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DB_URI", "sqlite:///backend/db.sqlite")
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'a_very_secret_key')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'krushivaani.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwt-secret")
