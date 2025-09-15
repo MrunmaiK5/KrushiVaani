@@ -14,26 +14,23 @@ def recommend_all_route():
         return jsonify({"error": "No data provided"}), 400
 
     try:
-        # Step 1: Predict crop using the crop service
+        # Step 1: Predict crop
         crop_result = predict_crop(data)
 
-        # Step 2: Add the newly predicted crop to the data for the next step
-        # Note: Mrunmai's fertilizer service expects the key to be "Crop" (capital C)
+        # Step 2: Add predicted crop to the data
         data["Crop"] = crop_result.get("predicted_crop")
 
-        # Step 3: Get fertilizer recommendation using the fertilizer service
+        # Step 3: Get fertilizer recommendation
         fertilizer_result = recommend_fertilizer(data)
 
-        # Step 4: Combine both results into a single, comprehensive response
+        # Step 4: Combine results
         final_response = {
             "crop_prediction": crop_result,
             "fertilizer_recommendation": fertilizer_result
         }
-
         return jsonify(final_response), 200
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        # This will catch any other errors, including potential ones from the ML models
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
