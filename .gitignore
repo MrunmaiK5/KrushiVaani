@@ -19,3 +19,5 @@ build/
 ml_models/disease_detection/data/train/
 ml_models/disease_detection/data/validate/
 ml_models/disease_detection/data/test/
+# Ignore raw dataset
+ml_models/disease_detection/data/raw/
