@@ -30,10 +30,14 @@ def create_app(config_class=Config):
     from backend.routes.user_routes import user_bp
     from backend.routes.fertilizer_routes import fertilizer_bp
     from backend.routes.hybrid_routes import hybrid_bp
+    from backend.routes.weather_routes import weather_bp 
+    from backend.routes.chatbot_routes import chatbot_bp
 
     app.register_blueprint(user_bp, url_prefix='/users')
     app.register_blueprint(fertilizer_bp, url_prefix='/fertilizer')
-    app.register_blueprint(hybrid_bp, url_prefix='/hybrid')  # <-- Add this line
+    app.register_blueprint(hybrid_bp, url_prefix='/hybrid')
+    app.register_blueprint(weather_bp, url_prefix='/weather')
+    app.register_blueprint(chatbot_bp, url_prefix='/chatbot')
 
     # A simple test route
     @app.route('/')
