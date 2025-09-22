@@ -13,6 +13,9 @@ build/
 .DS_Store
 
 # Data / models
-data-raw/
-ml-models/model*.pkl
-ml-models/*.h5
+# ml-models/*.h5  <- Kept commented out to track your final model
+
+# Ignore generated dataset folders using their full path
+ml_models/disease_detection/data/train/
+ml_models/disease_detection/data/validate/
+ml_models/disease_detection/data/test/
