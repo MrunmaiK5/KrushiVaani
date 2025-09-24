@@ -11,3 +11,4 @@ def get_weather(city: str):
         return jsonify(weather_data), 200
     except (ValueError, Exception) as e:
         return jsonify({"error": str(e)}), 400
+    
