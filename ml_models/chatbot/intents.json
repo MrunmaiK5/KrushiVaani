@@ -2,63 +2,97 @@
   "intents": [
     {
       "tag": "greet",
-      "patterns": ["नमस्कार", "हॅलो", "Hi", "Hello", "Good morning", "Good evening"],
-      "responses": ["नमस्कार! कशी मदत करू शकतो?", "Hello! How can I help you today?"]
+      "patterns": [
+        "नमस्कार",
+        "हॅलो",
+        "Hi",
+        "Hello",
+        "Good morning",
+        "Good evening",
+        "How are you",
+        "Good afternoon",
+        "काय चाललंय?"
+      ],
+      "responses": [
+        "नमस्कार! कशी मदत करू शकतो?",
+        "Hello! How can I help you today?"
+      ]
     },
     {
       "tag": "goodbye",
-      "patterns": ["बाय", "Goodbye", "See you", "पुन्हा भेटूया"],
-      "responses": ["पुन्हा भेटूया! शुभेच्छा!", "Goodbye! Take care!"]
+      "patterns": [
+        "बाय",
+        "Goodbye",
+        "See you",
+        "पुन्हा भेटूया",
+        "Bye bye",
+        "Talk to you later"
+      ],
+      "responses": [
+        "पुन्हा भेटूया! शुभेच्छा!",
+        "Goodbye! Take care!"
+      ]
     },
     {
       "tag": "thanks",
-      "patterns": ["धन्यवाद", "Thank you", "Thanks a lot", "Thanks"],
-      "responses": ["तुमचे स्वागत आहे!", "You’re welcome!"]
+      "patterns": [
+        "धन्यवाद",
+        "Thank you",
+        "Thanks a lot",
+        "Thanks",
+        "Much appreciated",
+        "आभारी आहे"
+      ],
+      "responses": [
+        "तुमचे स्वागत आहे!",
+        "You’re welcome!"
+      ]
     },
     {
       "tag": "fertilizer_advice",
       "patterns": [
-        "कसली खत वापरावी?", 
-        "मी कोणते खत वापरू?", 
-        "मातीसाठी योग्य खत सांगा", 
-        "पीकासाठी योग्य खत काय आहे?"
+        "कसली खत वापरावी?",
+        "मी कोणते खत वापरू?",
+        "मातीसाठी योग्य खत सांगा",
+        "पीकासाठी योग्य खत काय आहे?",
+        "Fertilizer recommendation",
+        "What fertilizer should I use",
+        "खत सांगा",
+        "Suggest a fertilizer"
       ],
       "responses": [
         "कृपया सांगा: मातीचा प्रकार (चिकट/वाळूदार/काळसर), पीकाचे नाव, आणि पीकाचा टप्पा (सुरुवातीला/वाढीवर/तयार होत आहे)."
       ]
     },
     {
-      "tag": "fertilizer_recommendation",
+      "tag": "weather_alert",
       "patterns": [
-        "माती चिकट आहे, पीक गहू, सुरुवातीला", 
-        "माती वाळूदार आहे, पीक तांदूळ, वाढीवर", 
-        "माती काळसर आहे, पीक टोमॅटो, तयार होत आहे"
+        "Weather update",
+        "हवामान कसे आहे?",
+        "आज हवामान कसे आहे?",
+        "Is it going to rain?",
+        "What's the weather today",
+        "आज पाऊस पडेल का?"
       ],
       "responses": [
-        "शिफारस: Urea 20kg + DAP 10kg",
-        "शिफारस: NPK 10:26:26, 15kg",
-        "शिफारस: Compost + Balanced NPK"
+        "तुमच्या स्थानाचे हवामान तपासण्यासाठी, कृपया डॅशबोर्डवरील हवामान विभाग तपासा.",
+        "To check the weather for your location, please see the weather section on the dashboard."
       ]
-    },
-    {
-      "tag": "weather_alert",
-      "patterns": ["Weather update", "हवामान कसे आहे?", "आज हवामान कसे आहे?", "Is it going to rain?"],
-      "responses": ["आज हवामान संभाव्य धोकादायक आहे. कृपया सावधान रहा.", "Weather alert: Check your crops for protection!"]
     },
     {
       "tag": "crop_tips",
       "patterns": [
-        "कंपोस्ट कसा तयार करायचा?", 
-        "Which crop to plant?", 
-        "पिकांसाठी काही टिप्स आहेत का?", 
-        "Best practices for crops"
+        "कंपोस्ट कसा तयार करायचा?",
+        "Which crop to plant?",
+        "पिकांसाठी काही टिप्स आहेत का?",
+        "Best practices for crops",
+        "Tell me a tip",
+        "शेतीसाठी माहिती द्या",
+        "How to improve my farm"
       ],
-      "responses": ["तुमच्या पिकासाठी योग्य टिप्स: योग्य पाणी, खत आणि कीटक नियंत्रण महत्त्वाचे आहे."]
-    },
-    {
-      "tag": "fallback",
-      "patterns": ["", "I don't know", "माहित नाही", "What to do?"],
-      "responses": ["माफ करा, मी समजू शकलो नाही. कृपया दुसऱ्या शब्दात विचार करा."]
+      "responses": [
+        "तुमच्या पिकासाठी योग्य टिप्स: योग्य पाणी, खत आणि कीटक नियंत्रण महत्त्वाचे आहे."
+      ]
     }
   ]
 }

@@ -1,15 +1,23 @@
 # backend/services/chatbot_service.py
 
-def get_chatbot_response(user_message: str) -> str:
+import sys
+import os
+
+# This adds the project's root directory to the Python path
+# so we can import files from the ml_models folder.
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
+# Now we can import your actual prediction function
+from ml_models.chatbot.final_predict import get_chatbot_response
+
+def get_bot_prediction(user_message: str) -> str:
     """
-    Placeholder for the actual chatbot AI model.
-    Takes a user's message and returns a simple, canned response.
+    This is the real service function that calls the ML model.
     """
-    print(f"Chatbot Service (Placeholder): Received message '{user_message}'")
+    if not user_message:
+        return "I'm sorry, I didn't receive a message."
     
-    # In the future, this is where the real ML model prediction will happen.
-    # For now, we'll just echo the message back with a simple reply.
-    
-    response = f"You said: '{user_message}'. The AI is still learning. Ask me again later!"
-    
+    response = get_chatbot_response(user_message)
     return response
