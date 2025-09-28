@@ -1,0 +1,42 @@
+.hero-section {
+  position: relative;
+  height: 60vh;
+ background-image: url('https://wallpapers.com/images/featured/organic-farming-snmzav3nv42lgclu.jpg');/* A nice farming background image */
+ /*background-image: url('http://wallpapercave.com/wp/wp1886357.jpg');*/
+  /*background-image: url('https://images.unsplash.com/photo-1560493676-04071c5f467b');*/
+  /*background-image: url('https://as2.ftcdn.net/v2/jpg/02/50/10/17/1000_F_250101768_Qhn6oFRCgQArmI5Ov5EY3EOtYTTHpOg5.jpg');*/
+ background-size: cover;
+  background-position: center right;
+  color: #fff;
+}
+
+/* Dark overlay for better text readability */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure content is above the overlay */
+.hero-section .container {
+  position: relative;
+  z-index: 1;
+  padding-top: 25vh;
+}
+
+.feature-icon {
+  font-size: 3rem; /* Makes the emoji icons larger */
+}
+
+.feature-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
