@@ -5,7 +5,8 @@ flask_sqlalchemy
 flask-jwt-extended
 python-dotenv
 bcrypt
-
+Flask-Bcrypt
+Flask-Migrate
 # Database (choose one)
 pymysql
 # mysqlclient   # if you want C-based MySQL driver
@@ -31,3 +32,11 @@ SpeechRecognition
 requests
 marshmallow
 gunicorn
+
+#other packages
+# NLP & Chatbot
+nltk
+
+# Deep Learning for Disease Detection
+tensorflow
+numpy
