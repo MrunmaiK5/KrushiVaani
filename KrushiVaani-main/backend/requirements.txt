@@ -1,0 +1,33 @@
+# Flask and Backend
+flask
+flask-cors
+flask_sqlalchemy
+flask-jwt-extended
+python-dotenv
+bcrypt
+
+# Database (choose one)
+pymysql
+# mysqlclient   # if you want C-based MySQL driver
+
+# Machine Learning / AI
+pandas
+numpy
+scikit-learn
+joblib
+torch
+torchvision
+
+# Image processing
+pillow
+opencv-python
+albumentations
+
+# Voice chatbot
+gtts
+SpeechRecognition
+
+# Utils
+requests
+marshmallow
+gunicorn
