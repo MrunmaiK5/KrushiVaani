@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Import Layout Components
+// Import Layout and Page Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-
-// Import Page Components
+import ProtectedRoute from './components/ProtectedRoute'; // <-- 1. IMPORT
 import HomePage from './pages/Home';
-import RecommendationPage from './pages/RecommendationPage'; // IMPORT NEW PAGE
+import RecommendationPage from './pages/RecommendationPage';
 import DiseaseDetection from './pages/DiseaseDetection';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
@@ -19,12 +18,30 @@ function App() {
         <Navbar />
         <main className="flex-grow-1">
           <Routes>
+            {/* These routes are PUBLIC */}
             <Route path="/" element={<HomePage />} />
-            {/* UPDATED ROUTE */}
-            <Route path="/recommendation" element={<RecommendationPage />} />
-            <Route path="/disease-detection" element={<DiseaseDetection />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+
+            {/* 2. WRAP YOUR PROTECTED ROUTES */}
+            <Route 
+              path="/recommendation" 
+              element={
+                <ProtectedRoute>
+                  <RecommendationPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/disease-detection" 
+              element={
+                <ProtectedRoute>
+                  <DiseaseDetection />
+                </ProtectedRoute>
+              } 
+            />
+            {/* You can also protect the Weather and Chatbot pages the same way */}
+
           </Routes>
         </main>
         <Footer />
