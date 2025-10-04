@@ -1,15 +1,15 @@
-import React, { useState } from 'react'; // CORRECTED LINE
-import { getWeatherData, getBothRecommendations, getFertilizerOnly } from '../services/api';
+import React, { useState } from 'react';
+import { getBothRecommendations, getFertilizerOnly } from '../services/api';
 import RecommendationForm from '../components/RecommendationForm';
 import CropResult from '../components/CropResult';
 import FertilizerResult from '../components/FertilizerResult';
 
 const RecommendationPage = () => {
-  const [formData, setFormData] = useState({ N: '', P: '', K: '', ph: '', location: '', crop: '' });
+  const [formData, setFormData] = useState({ N: '', P: '', K: '', ph: '', location: 'Pune', crop: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [cropResult, setCropResult] = useState('');
-  const [fertilizerResult, setFertilizerResult] = useState('');
+  const [fertilizerResult, setFertilizerResult] = useState(null);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,17 +20,17 @@ const RecommendationPage = () => {
     setLoading(true);
     setError('');
     setCropResult('');
-    setFertilizerResult('');
+    setFertilizerResult(null);
+
     try {
-      const weatherData = await getWeatherData(formData.location);
-      const soilData = { N: formData.N, P: formData.P, K: formData.K, ph: formData.ph };
-      const combinedData = { ...soilData, ...weatherData };
+      const soilData = { N: formData.N, P: formData.P, K: formData.K, ph: formData.ph, location: formData.location };
+      
       if (formData.crop) {
-        const finalData = { ...combinedData, crop: formData.crop };
+        const finalData = { ...soilData, crop: formData.crop };
         const response = await getFertilizerOnly(finalData);
         setFertilizerResult(response.prediction);
       } else {
-        const response = await getBothRecommendations(combinedData);
+        const response = await getBothRecommendations(soilData);
         setCropResult(response.crop_prediction);
         setFertilizerResult(response.fertilizer_prediction);
       }
@@ -43,27 +43,18 @@ const RecommendationPage = () => {
 
   return (
     <div className="container my-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
-          <div className="card shadow-lg border-0">
-            <div className="card-body p-5">
-              <h1 className="card-title text-center fw-bold text-dark mb-2">Farm Analysis</h1>
-              <p className="card-text text-center text-muted mb-5">
-                Enter your soil data and location to get a complete crop and fertilizer plan.
-              </p>
-              <RecommendationForm
-                formData={formData}
-                loading={loading}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-              />
-              <div className="mt-4">
-                {error && <div className="alert alert-danger">{error}</div>}
-                <CropResult crop={cropResult} />
-                <FertilizerResult fertilizer={fertilizerResult} />
-              </div>
-            </div>
-          </div>
+      <div className="card shadow-lg p-4 p-md-5">
+        <h1 className="card-title text-center fw-bold text-dark mb-4">Farm Analysis Advisor</h1>
+        <RecommendationForm
+          formData={formData}
+          loading={loading}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
+        <div className="mt-4">
+          {error && <div className="alert alert-danger">{error}</div>}
+          <CropResult crop={cropResult} />
+          {fertilizerResult && <FertilizerResult fertilizer={fertilizerResult.recommended_fertilizers.join(', ')} />}
         </div>
       </div>
     </div>

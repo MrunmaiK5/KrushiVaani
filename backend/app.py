@@ -1,56 +1,45 @@
-# backend/app.py
-import os
-import sys
-
-# This code adds the project's root folder (D:\KrushiVaani) to Python's path
-# It is a robust way to fix the "ModuleNotFoundError: No module named 'backend'"
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-
-from flask import Flask, jsonify
-from backend.config import Config
-from backend.extensions import db, bcrypt, cors, migrate # <-- Import from extensions
+from flask import Flask
+from flask_cors import CORS
+from .extensions import db, bcrypt, migrate, jwt
+from .config import Config
+from .models.user_model import User
 
 def create_app(config_class=Config):
-    """Application Factory Function"""
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
 
-    # Initialize extensions with the app
+    # Initialize extensions
+    CORS(app)
     db.init_app(app)
     bcrypt.init_app(app)
-    cors.init_app(app)
     migrate.init_app(app, db)
+    jwt.init_app(app)
 
-    # Import models here AFTER extensions are initialized
-    from backend.models.user_model import User
+    # THIS IS THE FINAL FIX: Use the new decorator to add claims
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
+        user = User.query.get(identity)
+        if user:
+            # This adds the username and email to the token payload
+            return {"username": user.username, "email": user.email}
+        return {}
 
-    # Register the Blueprints (our routes)
-    from backend.routes.user_routes import user_bp
-    from backend.routes.fertilizer_routes import fertilizer_bp
-    from backend.routes.hybrid_routes import hybrid_bp
-    from backend.routes.weather_routes import weather_bp
-    from backend.routes.chatbot_routes import chatbot_bp
-    from backend.routes.disease_routes import disease_bp # <-- CHECK THIS IMPORT
+    # Import and Register all your blueprints
+    from .routes.user_routes import user_bp
+    from .routes.recommendation_routes import recommendation_bp
+    from .routes.weather_routes import weather_bp
+    from .routes.chatbot_routes import chatbot_bp
+    from .routes.voice_routes import voice_bp
+    
+    app.register_blueprint(user_bp)
+    app.register_blueprint(recommendation_bp)
+    app.register_blueprint(weather_bp)
+    app.register_blueprint(chatbot_bp)
+    app.register_blueprint(voice_bp)
 
-    app.register_blueprint(user_bp, url_prefix='/users')
-    app.register_blueprint(fertilizer_bp, url_prefix='/fertilizer')
-    app.register_blueprint(hybrid_bp, url_prefix='/hybrid')
-    app.register_blueprint(weather_bp, url_prefix='/weather')
-    app.register_blueprint(chatbot_bp, url_prefix='/chatbot')
-    app.register_blueprint(disease_bp, url_prefix='/disease') # <-- CHECK THIS REGISTRATION
-
-    # A simple test route
-    @app.route('/')
+    @app.route("/")
     def index():
-        return jsonify(message="The KrushiVaani server is running and ready for authentication!")
+        return {"message": "Welcome to the KrushiVaani Flask API!"}
 
     return app
-
-# Create the app instance
-app = create_app()
-
-if __name__ == '__main__':
-    app.run(debug=True)
 

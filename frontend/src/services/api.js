@@ -1,49 +1,74 @@
-import apiClient from './apiClient'; // CORRECTED: Import from the new client file
+import apiClient from './apiClient';
+import { getToken } from './authorize';
 
-const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-
-/**
- * Fetches live weather data for a given location.
- * @param {string} location - The city or village name.
- * @returns {Promise<object>} An object with temperature, humidity, and rainfall.
- */
-export const getWeatherData = async (location) => {
-  const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${WEATHER_API_KEY}&units=metric`);
-  if (!response.ok) {
-    throw new Error('Could not fetch weather data. Please check the location.');
+// --- Auth Functions ---
+export const signupUser = async (userData) => {
+  try {
+    const response = await apiClient.post('/auth/register', userData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Failed to create account.');
   }
-  const data = await response.json();
-  return {
-    temperature: data.main.temp,
-    humidity: data.main.humidity,
-    rainfall: data.rain?.['1h'] || 70, // Using a fallback if no direct rain data
-  };
 };
 
-/**
- * Gets both crop and fertilizer recommendations from the backend.
- * @param {object} data - Combined soil and weather data.
- * @returns {Promise<object>} The server response with crop and fertilizer predictions.
- */
+export const loginUser = async (credentials) => {
+  try {
+    const response = await apiClient.post('/auth/login', credentials);
+    const { access_token } = response.data;
+    if (access_token) {
+      localStorage.setItem('authToken', access_token);
+    }
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Failed to login.');
+  }
+};
+
+// --- Profile Functions ---
+export const getUserProfile = async () => {
+  try {
+    const response = await apiClient.get('/auth/profile', {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Failed to fetch profile.');
+  }
+};
+
+export const updateUserLocation = async (location) => {
+  try {
+    const response = await apiClient.put(
+      '/auth/profile/update',
+      { location }, // Data to send
+      { headers: { Authorization: `Bearer ${getToken()}` } } // Auth header
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Failed to update location.');
+  }
+};
+
+// --- Recommendation Functions ---
 export const getBothRecommendations = async (data) => {
   try {
-    const response = await apiClient.post('/recommend_all', data);
+    const response = await apiClient.post('/recommend/crop-and-fertilizer', data, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+    });
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.detail || 'Failed to get recommendations.');
+    throw new Error(error.response?.data?.error || 'Failed to fetch recommendations');
   }
 };
 
-/**
- * Gets only a fertilizer recommendation for a user-specified crop.
- * @param {object} data - Combined soil, weather, and crop data.
- * @returns {Promise<object>} The server response with fertilizer prediction.
- */
 export const getFertilizerOnly = async (data) => {
   try {
-    const response = await apiClient.post('/fertilizer/recommend', data);
+    const response = await apiClient.post('/recommend/fertilizer-only', data, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+    });
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.detail || 'Failed to get fertilizer plan.');
+    throw new Error(error.response?.data?.error || 'Failed to fetch fertilizer plan');
   }
 };
+

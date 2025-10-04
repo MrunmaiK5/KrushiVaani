@@ -1,46 +1,64 @@
-# backend/routes/user_routes.py
-
 from flask import Blueprint, request, jsonify
-from backend.models.user_model import User
-from backend.extensions import db, bcrypt
+from ..models.user_model import User
+from ..extensions import db
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-# A Blueprint is a way to organize a group of related routes.
-user_bp = Blueprint('user_bp', __name__)
-
+user_bp = Blueprint('user_bp', __name__, url_prefix='/auth')
 
 @user_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get('username')
-    email = data.get('email')
-    password = data.get('password')
-
+    username, email, password = data.get('username'), data.get('email'), data.get('password')
     if not all([username, email, password]):
-        return jsonify({"error": "Missing data"}), 400
-
-    if User.query.filter_by(email=email).first() or User.query.filter_by(username=username).first():
-        return jsonify({"error": "User already exists"}), 409
-
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(username=username, email=email, password_hash=hashed_password)
-
+        return jsonify({"error": "All fields are required"}), 400
+    if User.query.filter((User.email == email) | (User.username == username)).first():
+        return jsonify({"error": "User with this email or username already exists"}), 409
+    
+    new_user = User(username=username, email=email, password=password)
     db.session.add(new_user)
     db.session.commit()
-
     return jsonify({"message": "User registered successfully"}), 201
-
 
 @user_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-
+    email, password = data.get('email'), data.get('password')
     user = User.query.filter_by(email=email).first()
+    if user and user.check_password(password):
+        # The identity is now correctly just the user's ID
+        access_token = create_access_token(identity=user.id)
+        return jsonify(access_token=access_token), 200
+    return jsonify({"error": "Invalid email or password"}), 401
 
-    if user and bcrypt.check_password_hash(user.password_hash, password):
-        # For now, we return a simple success message.
-        # Later, we will return a JWT token for secure authentication.
-        return jsonify({"message": "Login successful", "user": {"username": user.username, "email": user.email}}), 200
+@user_bp.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
+    user_id = get_jwt_identity() # This now correctly gets the user ID
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    return jsonify({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "location": user.location
+    }), 200
 
-    return jsonify({"error": "Invalid credentials"}), 401
+@user_bp.route('/profile/update', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    data = request.get_json()
+    new_location = data.get('location')
+    if not new_location:
+        return jsonify({"error": "Location not provided"}), 400
+
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user.location = new_location
+    db.session.commit()
+    return jsonify({"message": f"Location updated successfully to {new_location}"}), 200
+

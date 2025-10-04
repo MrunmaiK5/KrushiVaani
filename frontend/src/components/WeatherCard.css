@@ -1,0 +1,42 @@
+/* frontend/src/components/WeatherCard.css */
+.weather-card {
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card h3 {
+  margin-top: 0;
+}
+
+.weather-card .temperature {
+  font-size: 2.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.weather-card .description {
+  text-align: center;
+  margin-top: -10px;
+  font-style: italic;
+}
+
+.weather-card .alert-message {
+  font-size: 0.95em;
+}
+
+/* Dynamic color styles */
+.card-success { background-color: #28a745; } /* Green for 'all clear' */
+.card-info { background-color: #17a2b8; } /* Blue for general info */
+.card-warning { background-color: #ffc107; color: #333; } /* Yellow for 'notice' */
+.card-danger { background-color: #dc3545; } /* Red for 'alert' or 'warning' */
+
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 15px;
+  border-radius: 5px;
+}
