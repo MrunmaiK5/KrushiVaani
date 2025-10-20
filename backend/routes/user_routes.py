@@ -51,3 +51,43 @@ def get_user_history():
         return jsonify(history_list), 200
     except Exception as e:
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+   
+@user_bp.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
+    # Get the user's ID securely from the access token
+    user_id = get_jwt_identity() 
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    # Return the user's details
+    return jsonify({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "location": user.location 
+    }), 200
+
+
+@user_bp.route('/profile/update', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    data = request.get_json()
+    new_location = data.get('location')
+
+    if not new_location:
+        return jsonify({"error": "Location not provided"}), 400
+
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Update the user's location in the database
+    user.location = new_location
+    db.session.commit()
+    
+    return jsonify({"message": f"Location updated successfully to {new_location}"}), 200

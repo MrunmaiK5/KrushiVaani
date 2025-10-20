@@ -32,7 +32,7 @@ def create_app(config_class=Config):
     from .routes.voice_routes import voice_bp
     
     app.register_blueprint(user_bp)
-    app.register_blueprint(recommendation_bp)
+    app.register_blueprint(recommendation_bp, url_prefix='/recommend')
     app.register_blueprint(weather_bp)
     app.register_blueprint(chatbot_bp)
     app.register_blueprint(voice_bp)
