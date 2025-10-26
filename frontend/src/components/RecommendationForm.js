@@ -1,7 +1,9 @@
 import React from 'react';
 
 const RecommendationForm = ({ formData, loading, handleChange, handleSubmit }) => {
-  const cropTypes = ['Maize', 'Sugarcane', 'Cotton', 'Tobacco', 'Paddy', 'Barley', 'Wheat', 'Millets', 'Oil seeds', 'Pulses', 'Ground Nuts'];
+  const cropTypes = ['rice','maize','chickpea','kidneybeans','pigeonpeas','mothbeans','mungbean','blackgram','lentil','pomegranate',
+  'banana','mango','grapes','watermelon','muskmelon','apple','orange','papaya','coconut','cotton','jute','coffee'];
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row g-4">
