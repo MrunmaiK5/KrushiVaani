@@ -91,7 +91,7 @@ export default function VoiceButton({ onSpeechResult, textToSpeak, mode = "input
         }`}
       >
         {isPlaying ? <Square size={18} /> : <Volume2 size={18} />}
-        <span className="font-medium">{isPlaying ? "Stop" : "Advice"}</span>
+        <span className="font-medium">{isPlaying ? "Stop" : "Salla aika"}</span>
       </button>
     );
   }
