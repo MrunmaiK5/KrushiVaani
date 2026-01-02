@@ -8,7 +8,7 @@ from backend.services.disease_service import predict_disease
 
 disease_bp = Blueprint('disease_bp', __name__)
 
-# Define a folder to store uploaded images temporarily
+# A folder to store uploaded images temporarily
 UPLOAD_FOLDER = 'backend/temp_uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -37,7 +37,7 @@ def predict_disease_route():
 
             # --- Call the service with the file path ---
             result = predict_disease(file_path)
-            # -------------------------------------------
+           
 
             # Clean up the uploaded file
             os.remove(file_path)

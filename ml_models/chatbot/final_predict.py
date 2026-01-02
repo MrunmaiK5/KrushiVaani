@@ -11,7 +11,7 @@ import os
 # Initialize lemmatizer
 lemmatizer = WordNetLemmatizer()
 
-# --- Load the saved model and other necessary files ---
+# --- Loading the saved model and other files ---
 dir_path = os.path.dirname(os.path.realpath(__file__))
 model_path = os.path.join(dir_path, "chatbot_model.pkl")
 lbl_encoder_path = os.path.join(dir_path, "label_encoder.pkl")

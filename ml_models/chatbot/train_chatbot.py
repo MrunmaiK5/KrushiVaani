@@ -7,7 +7,7 @@ from sklearn.svm import SVC
 import pickle
 import os
 
-# --- THIS IS THE UPDATED PART ---
+
 # Download necessary NLTK data (only runs if needed)
 try:
     nltk.data.find('tokenizers/punkt')
@@ -32,8 +32,7 @@ intents_path = os.path.join(dir_path, 'intents.json')
 with open(intents_path, "r", encoding="utf-8") as f:
     intents = json.load(f)
 
-# (The rest of your code is perfect and remains the same)
-# ...
+
 all_words = []
 tags = []
 xy = []
@@ -67,7 +66,6 @@ y_train = lbl_encoder.fit_transform(y_train)
 model = SVC(kernel='linear', probability=True)
 model.fit(X_train, y_train)
 
-# Replace the old, incomplete lines with these:
 pickle.dump(model, open(os.path.join(dir_path, "chatbot_model.pkl"), "wb"))
 pickle.dump(lbl_encoder, open(os.path.join(dir_path, "label_encoder.pkl"), "wb"))
 pickle.dump(all_words, open(os.path.join(dir_path, "all_words.pkl"), "wb"))

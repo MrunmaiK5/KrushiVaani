@@ -10,7 +10,7 @@ SCRIPT_DIR = os.path.dirname(__file__)
 MODEL_PATH = os.path.join(SCRIPT_DIR, '..', '..', 'ml_models', 'disease_detection', 'disease_cnn.h5')
 MAPPING_PATH = os.path.join(SCRIPT_DIR, '..', '..', 'ml_models', 'disease_detection', 'data', 'class_mapping.json')
 
-# --- Load the model and class mapping once when the service starts ---
+# --- Loading the model and class mapping once when the service starts ---
 try:
     # Load the trained model
     model = load_model(MODEL_PATH)

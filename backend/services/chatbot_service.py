@@ -9,7 +9,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-# Now we can import your actual prediction function
+# import actual prediction function
 from ml_models.chatbot.final_predict import get_chatbot_response
 
 def get_bot_prediction(user_message: str) -> str:

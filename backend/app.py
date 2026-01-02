@@ -15,7 +15,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # THIS IS THE FINAL FIX: Use the new decorator to add claims
+    # THIS IS THE FINAL FIX
     @jwt.additional_claims_loader
     def add_claims_to_jwt(identity):
         user = User.query.get(identity)
@@ -24,7 +24,7 @@ def create_app(config_class=Config):
             return {"username": user.username, "email": user.email}
         return {}
 
-    # Import and Register all your blueprints
+    # Import and Register all blueprints
     from .routes.user_routes import user_bp
     from .routes.recommendation_routes import recommendation_bp
     from .routes.weather_routes import weather_bp
