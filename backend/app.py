@@ -15,16 +15,23 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+<<<<<<< HEAD
     # THIS IS THE FINAL FIX
+=======
+    # JWT additional claims to store user info in the token
+>>>>>>> c1a451279ad8528d78550fa2f59895c93599359a
     @jwt.additional_claims_loader
     def add_claims_to_jwt(identity):
         user = User.query.get(identity)
         if user:
-            # This adds the username and email to the token payload
             return {"username": user.username, "email": user.email}
         return {}
 
+<<<<<<< HEAD
     # Import and Register all blueprints
+=======
+    # Registering Blueprints
+>>>>>>> c1a451279ad8528d78550fa2f59895c93599359a
     from .routes.user_routes import user_bp
     from .routes.recommendation_routes import recommendation_bp
     from .routes.weather_routes import weather_bp
@@ -42,4 +49,3 @@ def create_app(config_class=Config):
         return {"message": "Welcome to the KrushiVaani Flask API!"}
 
     return app
-

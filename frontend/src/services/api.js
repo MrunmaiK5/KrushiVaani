@@ -1,10 +1,13 @@
 import apiClient from './apiClient';
 import { getToken } from './authorize';
 
-// --- Auth Functions ---
+// --- Auth & User Profile Functions ---
+// Blueprints: user_bp is registered with url_prefix='/auth'
+
 export const signupUser = async (userData) => {
   try {
-    const response = await apiClient.post('/auth/register', userData);
+    // UPDATED: Matches @user_bp.route('/register') with '/auth' prefix
+    const response = await apiClient.post('/auth/register', userData); 
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.error || 'Failed to create account.');
@@ -13,6 +16,7 @@ export const signupUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
+    // UPDATED: Matches @user_bp.route('/login') with '/auth' prefix
     const response = await apiClient.post('/auth/login', credentials);
     const { access_token } = response.data;
     if (access_token) {
@@ -24,12 +28,11 @@ export const loginUser = async (credentials) => {
   }
 };
 
-// --- Profile Functions ---
 export const getUserProfile = async () => {
   try {
-    const response = await apiClient.get('/auth/profile', {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    });
+    // UPDATED: Matches @user_bp.route('/profile') with '/auth' prefix
+    // CRITICAL: Fixes the "Failed to fetch profile" error on RecommendationPage
+    const response = await apiClient.get('/auth/profile'); 
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.error || 'Failed to fetch profile.');
@@ -38,11 +41,8 @@ export const getUserProfile = async () => {
 
 export const updateUserLocation = async (location) => {
   try {
-    const response = await apiClient.put(
-      '/auth/profile/update',
-      { location }, // Data to send
-      { headers: { Authorization: `Bearer ${getToken()}` } } // Auth header
-    );
+    // UPDATED: Matches @user_bp.route('/profile/update') with '/auth' prefix
+    const response = await apiClient.put('/auth/profile/update', { location });
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.error || 'Failed to update location.');
@@ -50,25 +50,38 @@ export const updateUserLocation = async (location) => {
 };
 
 // --- Recommendation Functions ---
+// Blueprints: recommendation_bp is registered with url_prefix='/recommend'
+
 export const getBothRecommendations = async (data) => {
   try {
-    const response = await apiClient.post('/recommend/crop-and-fertilizer', data, {
-        headers: { Authorization: `Bearer ${getToken()}` }
-    });
+    // Payload includes: N, P, K, ph, location. Backend merges Weather data.
+    const response = await apiClient.post('/recommend/both', data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Failed to fetch recommendations');
+    throw new Error(error.response?.data?.message || 'Failed to fetch hybrid recommendations');
   }
 };
 
 export const getFertilizerOnly = async (data) => {
   try {
-    const response = await apiClient.post('/recommend/fertilizer-only', data, {
-        headers: { Authorization: `Bearer ${getToken()}` }
-    });
+    const response = await apiClient.post('/recommend/fertilizer', data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Failed to fetch fertilizer plan');
+    throw new Error(error.response?.data?.message || 'Failed to fetch fertilizer plan');
   }
 };
 
+// --- Disease Detection Functions ---
+export const detectDisease = async (imageFile) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    // Note: Verify your disease blueprint prefix (e.g., /disease)
+    const response = await apiClient.post('/disease/predict', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Failed to analyze leaf image.');
+  }
+};
