@@ -11,6 +11,7 @@
 // };
 // export default FertilizerResult;
 
+
 import React from 'react';
 import VoiceButton from './VoiceButton'; // Import our dual-mode voice button
 import { Droplet, Info } from 'lucide-react'; // Professional farming icons

@@ -1,0 +1,154 @@
+/* पूर्ण पेज बॅकग्राउंड */
+.chatbot-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+}
+
+/* मुख्य चॅट विंडो */
+.chatbot-central-card {
+    width: 100%;
+    max-width: 450px;
+    height: 600px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+/* हेडर डिझाइन */
+.chatbot-header {
+    background: #1a3c40; /* तुमचा Navy Blue रंग */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bot-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bot-avatar {
+    background: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bot-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.bot-name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+}
+
+.bot-status {
+    font-size: 11px;
+    color: #a5d6a7;
+}
+
+/* चॅट बॉडी आणि बबल्स */
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    background: #f9f9f9;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    max-width: 85%;
+}
+
+.bot-align {
+    align-self: flex-start;
+}
+
+.user-align {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.chat-bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.chat-bubble.bot {
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.user {
+    background: #1a3c40;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* इनपुट एरिया */
+.chat-footer {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 10px 18px;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    background: #f0f2f5;
+}
+
+.send-btn {
+    background: #1a3c40;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.send-btn:hover {
+    transform: scale(1.1);
+    background: #265a60;
+}

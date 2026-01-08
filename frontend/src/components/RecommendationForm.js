@@ -40,15 +40,18 @@
 // export default RecommendationForm;
 
 import React from 'react';
-import VoiceButton from './VoiceButton'; // Import the new dual-mode button
+import './Recommendation.css';
+import VoiceButton from './VoiceButton'; 
 
 const RecommendationForm = ({ formData, loading, handleChange, handleSubmit, setFormData }) => {
   const cropTypes = ['rice','maize','chickpea','kidneybeans','pigeonpeas','mothbeans','mungbean','blackgram','lentil','pomegranate',
   'banana','mango','grapes','watermelon','muskmelon','apple','orange','papaya','coconut','cotton','jute','coffee'];
 
-  // Helper to extract numbers from voice input and update form
+  // रंगांचे व्हेरिएबल्स
+  const primaryNavy = "#1a3c40"; // नवीन मुख्य रंग
+  const accentTeal = "#265a60";
+
   const handleVoiceInput = (name, voiceText) => {
-    // Basic regex to find digits in the speech string
     const match = voiceText.match(/\d+/);
     if (match && setFormData) {
       const simulatedEvent = {
@@ -59,9 +62,13 @@ const RecommendationForm = ({ formData, loading, handleChange, handleSubmit, set
   };
 
   return (
-    <form onSubmit={handleSubmit} className="shadow-lg p-4 rounded bg-white">
+    <form 
+      onSubmit={handleSubmit} 
+      className="shadow-lg p-4 rounded bg-white" 
+      style={{ borderTop: `8px solid ${primaryNavy}` }} // वरची पट्टी Navy Blue
+    >
       <div className="row g-4">
-        {/* N, P, K with Voice Input Icons */}
+        {/* N, P, K Fields */}
         <div className="col-md-4">
           <div className="d-flex align-items-end gap-2">
             <div className="flex-grow-1">
@@ -94,22 +101,39 @@ const RecommendationForm = ({ formData, loading, handleChange, handleSubmit, set
         </div>
 
         <div className="col-md-6">
-          <label htmlFor="location" className="form-label fw-medium text-dark">Location / Thikan</label>
-          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} className="form-control form-control-lg" placeholder="Enter city or village" required />
+          <label htmlFor="location" className="form-label fw-bold" style={{ color: primaryNavy }}>Location / Thikan</label>
+          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} className="form-control form-control-lg border-2" placeholder="Enter city or village" required />
         </div>
 
         <div className="col-md-12">
-          <label htmlFor="crop" className="form-label fw-medium text-dark">Select Crop (Optional)</label>
-          <select id="crop" name="crop" value={formData.crop} onChange={handleChange} className="form-select form-select-lg border-success">
+          <label htmlFor="crop" className="form-label fw-bold" style={{ color: primaryNavy }}>Select Crop (Optional)</label>
+          <select 
+            id="crop" 
+            name="crop" 
+            value={formData.crop} 
+            onChange={handleChange} 
+            className="form-select form-select-lg border-2"
+            style={{ borderColor: primaryNavy }}
+          >
             <option value="">Predict Best Crop For Me (AI Recommendation)</option>
             {cropTypes.map(c => <option key={c} value={c}>{c.toUpperCase()}</option>)}
           </select>
-          <small className="text-success mt-1 d-block">Tip: Leave empty if you want our Random Forest model to decide.</small>
+          <small style={{ color: accentTeal }} className="mt-1 d-block fw-medium">Tip: Leave empty if you want our Random Forest model to decide.</small>
         </div>
       </div>
 
       <div className="d-grid mt-5">
-        <button type="submit" disabled={loading} className={`btn btn-lg ${loading ? 'btn-secondary' : 'btn-success shadow-sm'}`}>
+        <button 
+          type="submit" 
+          disabled={loading} 
+          className="btn btn-lg shadow"
+          style={{ 
+            backgroundColor: loading ? '#6c757d' : primaryNavy, 
+            color: 'white',
+            border: 'none',
+            padding: '15px'
+          }}
+        >
           {loading ? (
             <div className="d-flex align-items-center justify-content-center gap-2">
               <span className="spinner-border spinner-border-sm" role="status"></span>
@@ -124,7 +148,7 @@ const RecommendationForm = ({ formData, loading, handleChange, handleSubmit, set
 
 const InputField = ({ label, name, value, onChange, placeholder }) => (
   <div className="w-100">
-    <label htmlFor={name} className="form-label fw-medium text-dark">{label}</label>
+    <label htmlFor={name} className="form-label fw-bold" style={{ color: '#1a3c40' }}>{label}</label>
     <input 
       type="number" 
       id={name} 
@@ -134,7 +158,7 @@ const InputField = ({ label, name, value, onChange, placeholder }) => (
       placeholder={placeholder} 
       step="any" 
       required 
-      className="form-control form-control-lg shadow-sm" 
+      className="form-control form-control-lg shadow-sm border-2" 
     />
   </div>
 );

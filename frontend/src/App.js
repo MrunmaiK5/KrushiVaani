@@ -15,6 +15,8 @@ import WeatherPage from './pages/WeatherPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage'; // Added profile page
+import ChatbotPage from './pages/Chatbot';
+import Chatbot from './pages/Chatbot';
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
               <Route path="/disease-detection" element={<ProtectedRoute><DiseaseDetection /></ProtectedRoute>} />
               <Route path="/weather-alert" element={<ProtectedRoute><WeatherPage /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              <Route path="/chatbot" element={<Chatbot/>}/>
             </Routes>
           </main>
           <Footer />
